@@ -1,0 +1,66 @@
+package com.shopmax.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.shopmax.dto.ItemFormDto;
+import com.shopmax.entity.Item;
+import com.shopmax.entity.ItemImg;
+import com.shopmax.repository.ItemImgRepository;
+import com.shopmax.repository.ItemRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class ItemService {
+	
+	private final ItemRepository itemRepository;
+	private final ItemImgService itemImgService;
+	private final ItemImgRepository itemImgRepository;
+	
+	//item 테이블에 상품등록(insert)
+	public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception{
+		
+		//1. 상품등록
+		Item item = itemFormDto.createItem();  //Dto -> entity
+		itemRepository.save(item);  //insert(저장)
+		
+		//2. 이미지등록
+		for(int i=0; i<itemImgFileList.size(); i++) {
+			//외래키를 사용할 때 부모테이블에 해당하는 entity 를 먼저 넣어줘야 한다.
+			ItemImg itemImg = new ItemImg();
+			itemImg.setItem(item);
+			
+			//첫번째 이미지 일때 대표상품 이미지 지정
+			if(i == 0) {
+				itemImg.setRepimgYn("Y");
+			} else {
+				itemImg.setRepimgYn("N");
+			}
+			itemImgService.saveItemImg(itemImg, itemImgFileList.get(i));
+		}
+		
+		return item.getId();  //등록한 상품의 id를 리턴  => 그래서 메소드를 Long 타입으로 해줌
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
