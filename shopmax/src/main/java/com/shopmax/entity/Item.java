@@ -2,6 +2,7 @@ package com.shopmax.entity;
 
 
 import com.shopmax.constant.ItemSellStatus;
+import com.shopmax.dto.ItemFormDto;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,5 +34,14 @@ public class Item extends BaseEntity  {
 	
 	@Enumerated(EnumType.STRING)  // enum 의 이름을 DB에 저장
 	private ItemSellStatus itemSellStatus;  //판매상태(SELL, SOLD_OUT)   ->  item_sell_status
+	
+	//item 엔티티 수정
+	public void updateItem(ItemFormDto itemFormDto) {
+		this.itemNm = itemFormDto.getItemNm();
+		this.price = itemFormDto.getPrice();
+		this.stockNumber = itemFormDto.getStockNumber();
+		this.itemDetail = itemFormDto.getItemDetail();
+		this.itemSellStatus = itemFormDto.getItemSellStatus();
+	}
 
 }
