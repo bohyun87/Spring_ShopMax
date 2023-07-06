@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 import com.shopmax.constant.ItemSellStatus;
 import com.shopmax.entity.Item;
 					  		   //<연결하려고 하는 엔티티 클래스명, 프라이머리 키 타입>
-public interface ItemRepository extends JpaRepository<Item, Long>{  
-
+public interface ItemRepository extends JpaRepository<Item, Long>, ItemRepositoryCustom{  
+												
 	// select * from item where item_nm = ?
 	List<Item> findByItemNm(String itemNm);   //findBy + 컬럼명
 	

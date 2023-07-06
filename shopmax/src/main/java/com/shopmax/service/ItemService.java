@@ -2,12 +2,15 @@ package com.shopmax.service;
 
 import java.util.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.shopmax.dto.ItemFormDto;
 import com.shopmax.dto.ItemImgDto;
+import com.shopmax.dto.ItemSearchDto;
 import com.shopmax.entity.Item;
 import com.shopmax.entity.ItemImg;
 import com.shopmax.repository.ItemImgRepository;
@@ -99,6 +102,13 @@ public class ItemService {
 		
 		return item.getId();  //변경한 item의 id 리턴
 	}
+	
+	@Transactional(readOnly = true) 
+	public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+		Page<Item> itemPage = itemRepository.getAdminItemPage(itemSearchDto, pageable);
+		return itemPage;
+		
+	} 
 
 	
 }
