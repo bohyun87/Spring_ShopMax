@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.shopmax.dto.ItemFormDto;
 import com.shopmax.dto.ItemImgDto;
 import com.shopmax.dto.ItemSearchDto;
+import com.shopmax.dto.MainItemDto;
 import com.shopmax.entity.Item;
 import com.shopmax.entity.ItemImg;
 import com.shopmax.repository.ItemImgRepository;
@@ -110,6 +111,13 @@ public class ItemService {
 		
 	} 
 
+	//메인페이지 getMainItemPage 호출하는 메소드
+	
+	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
+		Page<MainItemDto> itemMainPage = itemRepository.getMainItemPage(itemSearchDto, pageable);
+		
+		return itemMainPage;
+	}
 	
 }
 

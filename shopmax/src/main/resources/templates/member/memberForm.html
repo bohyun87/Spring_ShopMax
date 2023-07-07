@@ -37,7 +37,7 @@
 									<label th:for="name" class="text-black">이름</label>
 									<!-- th:field => id, name 속성을 자동으로 생성해준다.  name="name" id="name" value="name" -->
 									<input type="text" class="form-control" placeholder="이름을 입력해주세요"
-										th:field="*{name}">
+										th:field="*{name}" />
 									<p th:if="${#fields.hasErrors('name')}" 
 									th:errors="*{name}" class="fieldError">Incorrect Data</p>
 								</div>
