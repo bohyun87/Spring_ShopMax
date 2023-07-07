@@ -1,0 +1,825 @@
+2023.06.26(월)
+스프링부트 + JPA+ Mysql
+
+[산출물]
+- 요구사항 정의서
+	↓
+- 갠트차트
+	↓
+- ERD
+	↓
+- 피그마
+
+디자인 - 부트스트랩 템플릿 사용하기!!!!!!!!!!!!
+- https://themewagon.com/
+- (검색어) 부트스트랩 쇼핑몰 무료 템플릿
+
+create database DB명;
+↑ 
+===================================
+
+스프링 이니셜라이저 생성
+
+이클립스 임폴트하기
+
+이클립스 프로젝트 시작
+
+리소스 / 스태틱	- css, fonts, images, js 폴더 만들기
+		- 폴더 안에 모든 파일 옮겨주기
+
+application.properties	- server.port 지정
+			- (추가) spring.devtools.livereload.enabled=true
+			- (추가) spring.thymeleaf.cache = false
+
+pom.xml		- 타임리프 추가(스프링+마이바티스 수업자료 2장 맨 마지막장 내용있음)
+		- <dependency> ... </dependency>
+
+templates	- fragments , layouts 폴더 만들기
+		- fragments  폴더 -> header.html , footer.html 만들기
+		- layouts  폴더 -> layout1.html 만들기
+		- templates 폴더 -> main.html 만들기
+
+header / footer / main.html	- <html> 태그 남기고 다 지우기
+ 
+header / footer.html	- <html xmlns:th="http://www.thymeleaf.org">  변경
+
+header.html	- vscode 에서 header 부분 코드 복사해오기
+		- th:fragment="header" 타임리프 걸어주기
+
+footer.html	- vscode 에서 header 부분 코드 복사해오기
+		- th:fragment="footer" 타임리프 걸어주기
+
+main.html	- header, footer 부분 제외하고 복사하기
+		- <div></div> 태그 작성하고 그 안에 복사한 태그 넣어주기
+		- 제일 상위 <div> 태그에  layout:fragment="content" 타임리프 걸어주기
+		- <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout1}">
+		- 레이아웃 사용하려면 위 태그를 꼭 넣어주여야한다.
+
+layout1.html	- <title>  변경
+		- <html xmlns:th="http://www.thymeleaf.org"
+		      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+		- vscode 에서 <meta>~<link> 모두 복사해서 -> <title> 아래 넣어주기
+		- href 부분 타임리프로 변경  th:href = "@{/경로}"  => 레이아웃에서 경로 잡을 때는  경로 앞에  /  꼭 붙여주기
+		- <meta> 는 <title> 위로 올리기
+		- vscode 에서 자바스크립트 가져오기(공통됨 부분만)
+		- 자바스크립트 타임리프 걸어주기 => th:src="@{/경로}" => 레이아웃에서 경로 잡을 때는  경로 앞에  /  꼭 붙여주기
+		- <!-- 각 페이지의 스크립트가 작성될 위치 -->
+	              <th:block layout:fragment="script"></th:block> => 하단에 추가하기 
+		- <!-- 각 페이지의 CSS가 작성될 위치 -->
+		  <th:block layout:fragment="css"></th:block>  => 상단에 css 아래 추가하기
+		- <body> 태그 안에  헤더, 메인, 푸터 공간 만들어주기
+		- vscode 에서 전체 감싸고 있는 <div class="site-wrap"> 가져오기
+		- 그 안에 헤더, 메인, 푸터 공간 나누기
+
+[웹에 띄워보기 위해 controller 만들기]
+
+com.shopmax.controller 패키지 생성 - MainController 클래스 만들기
+
+MainController .java	- @Controller 어노테이션 추가
+			- 메인을 띄워주는 메소드 만들기 - public String main() { return "main"; }
+			- main 메소드 @GetMapping(value="/") 어노테이션 추가
+
+header.html	- 디자인 수정하기
+		- class="search-wrap"  -> form 태그 action 경로잡기(타임리프걸기)
+		- <input> name 추가 ,  placeholder 변경
+		- 메뉴 단수 맞추기 / 메뉴 수정(경로, 메뉴명)
+		- 로고 부분 경로(href="/") 바꿔주기
+		- 장바구니(cart) 경로 수정 -> /cart
+
+[메뉴별 상세페이지 만들어주기]
+
+[templates] 폴더에 각각 폴더 생성  => 
+
+
+모든 html 파일에 => content 자리에  <div layout:fragment="content"></div> 공간 만들기
+vscode 에서 header, footer 부분 제외하고 가운데 복사해서 넣어주기
+
+qa.html		- "contact.html" 
+cartList.html	- "cart.html"
+itemShopList.html	- "shop.html"
+
+[com.shopmax.controller]	- ItemController / MemberController / CartController / OrderController class 생성
+			- @Controller 어노테이션 걸기
+
+CartController.java		- cartList() 메소드 작성 => @GetMapping(value = "/cart")
+ItemController.java		- itemShopList 메소드 => @GetMapping(value = "/item/Shop")
+MemberController.java	- qa 메소드  => @GetMapping(value = "/members/qa")
+
+itemShopList.html	- 필요한 부분만 남기고 태그 정리하기
+		- img 는 경로 앞에 / 붙여줘야함
+
+memberLoginForm.html	- 로그인창 껍데기 만들기 -> 디자인, 폼은 부트스트랩 이용하기
+memberForm.html		- 회원가입창 껍데기 만들기 -> 디자인, 폼은 부트스트랩 이용하기
+
+MemberController.java	- loginMember(), memberForm()  => 메소드 생성, return 경로, getmapping 경로지정
+memberLoginForm.html	- onclick="location.href='/members/new'"  경로지정
+
+
+반응형 웹 구성
+
+<div class="site-section">
+     <div class="container">
+          <div class="row">
+               <div class="col-md-12">    --col => 합쳐서 12
+               </div>
+          </div>
+     </div>
+</div>
+
+orderHist.html		- memberLoginForm.html 상위 고정 메뉴바 태그 복붙
+			- 로그인 => 구매이력 으로 변경
+			- <div class="site-section"></div> 만들어주기
+			- 반응형 웹 구성 만들어주기
+			- class="col-md-12 mb-0" <div> 안에 구매내역, 주문목록, 페이징버튼 <div> 만들기
+
+OrderController.java	- orderHist() 메소드 생성, return 경로, getmapping 경로지정
+
+itemForm.html		- memberLoginForm.html 상위 고정 메뉴바 태그 복붙
+			- 로그인 => 상품등록 으로 변경
+			- <div class="site-section"> 반응형 웹 구성 만들어주기
+
+itemMng.html		- memberLoginForm.html 상위 고정 메뉴바 태그 복붙
+			- 로그인 => 상품관리 로 변경
+			- orderHist.html 의 <div class="site-section"> 반응형 웹 구성 부분 복붙 => 내용바꾸기
+			- <col-md> 수치 고치기 8 => 12
+			- <div> 삭제 => <form> 추가
+			- 부트스트랩 - Docs - Content - Tables 에서 골라서 사용하기
+			- Responsive tables 부분 읽어보기
+			- <table> class 에 table-responsive-md 추가하기  =>반응형구축
+			- <th> 메뉴명칭 변경
+			- 페이징 처리 부스트랩으로 하기
+			- Components - pagination  에서 골라서 사용하기
+			- 검색창 만들기 => </nav> 아래에 <div> 추가
+			- class="row"  / class="col-lg-*" style 설정
+			- <select> box 추가(class="col-lg-5")
+			- 검색창 추가(class="col-lg-3")
+			- <stlye> select, a  css 설정
+
+ItemController.java		- itemForm(), itemManage() => 메소드 생성, return 경로, @GetMapping 경로지정 
+
+
+======================================================================================================
+
+2023.06.27(화)
+
+어플리케이션	- #데이터베이스 초기화 전략 추가
+		- #Mysql 접속정보		
+		- #오라클 sql 접속정보  => Mysql , oracle 두개 동시에 같이 쓸수 없다
+
+com.shopmax.entity  /  com.shopmax.constant  패키지 생성
+
+com.shopmax.constant  	- ItemSellStatus, OrderStatus, Role  "enum" 생성하기
+
+com.shopmax.entity  	- @Getter, @Setter, @ToString  lombok 어노테이션 추가
+			- 필드 추가하기
+			- @Entity , @Table(name="item") 어노테이션 추가
+			- 각 필드마다 @Column  추가
+			- private Long id;  @Id 추가  => primary key 라는 의미
+			- @GeneratedValue  시퀀스 처럼 자동으로 넘버 생성
+			- private String itemDetail;  @Lob 추가  => CLOB  역할
+			- private ItemSellStatus itemSellStatus;   @Enumerated 추가 
+
+com.shopmax.repository 패키지 생성,  ItemRepository  인터페이스 생성
+
+com.shopmax.repository  => DAO  역할
+
+ItemRepository		=> 인터페이스명 extends JpaRepository<Item, Long> 추가
+			=> <Item, Long>  =>  <연결하려고 하는 클래스명, 프라이머리 키 타입>
+
+======================================================================================================
+
+2023.06.28(수)
+
+MySQL Workbench,  H2 console 실행
+
+resources - 우클릭 - new - file - application-test.properties (.properties => 확장자)
+
+------------------------------------
+
+#H2 접속정보
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.url=jdbc:h2:tcp://localhost/~/test
+spring.datasource.username=sa
+spring.datasource.password=1234
+
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=create
+
+------------------------------------
+
+#Mysql 접속정보
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/shop?serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=1234
+
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+
+--------------------------------------
+
+#오라클 sql 접속정보
+#spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+#spring.datasource.url=jdbc:oracle:thin:@127.0.0.1:1521/xe
+#spring.datasource.username=exam
+#spring.datasource.password=exam1234
+
+#spring.jpa.database-platform=org.hibernate.dialect.Oracle10gDialect
+
+
+------------------------------------------
+
+test 쓰는 방법
+
+src/test/java  - [com.shopmax.repository] - ItemRepositoryTest  -> class 생성
+
+어노테이션 추가	- @SpringBootTest  /  @TestPropertySource
+
+객체 추가		- ItemRepository itemRepository;  -> @Autowired 어노테이션추가
+
+메소드 생성	- public void createItemTest()  -> @Test, @DisplayName 어노테이션 추가
+		- 데이터 넣어주고, 데이터 담아주기
+		- 클래스 창에서 우클릭 - run as - JUnit test 클릭 - 하단 JUnit 창 녹색 막대 생성 -> run as 성공
+
+		=> H2 에 테이블 생성됨
+		=> select * from item;   실행하면 데이터 들어가 있음		
+
+
+ItemRepository.ajva	- 쿼리메소드 생성 :  List<Item> findByItemNm(String itemNm);
+
+ItemRepositoryTest.java	- createItemList() 메소드에 "for 문"으로 데이터 넣기
+			- createItemTest() 메소드에 @Disabled 어노테이션 추가
+			- test 메소드 작성 : findByItemNmTest()
+			
+==================================================================
+
+2023.06.29(목)
+
+QItem.java	- public static final QItem item = new QItem("item");
+		-> Item.java  전체를 가져온다는 의미
+
+
+스프링 시큐리티(Spring Security) 실행  => 디펜던스 추가하기  -> Q 관련 클래스 자동 생성됨
+com.shopmax.config  패키지 생성	- SecurityConfig 클래스 생성
+				- @EnableWebSecurity, @Configuration 어노테이션 추가
+
+
+com.shopmax.constant - Role.java  생성
+
+Member.java	- 필드생성
+
+MemberFormDto.java	- 필드생성,  @Getter, @Setter 추가
+
+Member.java	- createMember() { }  메소드 추가
+
+com.shopmax.repository	- MemberRepository.java 인터페이스 생성
+
+MemberRepository.java 	- extends JpaRepository<Member, Long> 작성
+			- 회원가입시 중복 회원이 있는지 검사하기 위해
+			- Member findByEmail(String email);  추가
+
+com.shopmax.service 패키지 생성	- MemberService.java 클래스 추가
+
+MemberService.java 	- @Service 어노테이션 추가
+			- @Transactional 추가 (import 유형 확인하기)
+			- @RequiredArgsConstructor 추가
+			- private final MemberRepository memberRepository;
+			- ↑ MemberRepository  객체 만들기
+			- validateDuplicateMember(){} 메소드 추가
+			- public Member saveMember(){}  메소드 추가
+
+MemberController.java	- 회원가입화면 => model.addAttribute(); 추가
+
+
+memberForm.html		- <form> action, method 추가
+			- name, email, password, address <input>  => th:field="*{}"  추가 
+			- <form> 태그에 th:object="${}" 추가
+			- <style>  </style>  => color : #bd2130; 추가
+			- <p>Incorrect Data</p> => th:if="${#fields.hasErrors('  ')}" th:errors="*{}" 추가
+			- <script th:inline="javascript">  </script>  => 에러메세지 알림창
+			- </form> 앞에 추가 = ><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+MemberController.java	- @RequiredArgsConstructor  클래스 어노테이션 추가
+			- private final MemberService memberService;  추가
+			- private final PasswordEncoder passwordEncoder;  추가
+			- 회원가입하는 memberForm(){}  메소드 추가 => @PostMapping
+			- loginError(Model model) 메소드 작성
+
+======================================================
+2023.06.30(금)
+
+memberLoginForm.html	- </form> 앞에 추가 = ><input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			- 로그인~회원가입까지 적용돼야해서  => memberLoginForm.html	/  memberForm.html   둘다 넣어주기
+
+SecurityConfig.java		- passwordEncoder() 메소드 추가
+			- PasswordEncoder, BCryptPasswordEncoder  import 해주기
+			- filterChain(HttpSecurity http) 메소드 작성
+			-> 람다식 작성 	=> 1. 페이지 접근에 권한 
+					=> 2. 로그인에 관련된 설정
+					=> 3. 로그아웃에 관련된 설정
+					=> 4. 인증되지 않은 사용자가 리소스에 접근했을때 설정
+
+com.shopmax.config 패키지  ->   CustomAuthenticationEntryPoint.java  클래스 생성
+
+CustomAuthenticationEntryPoint.java	- implements AuthenticationEntryPoint
+				- 오버라이드 commence( ) 작성
+				- 에러메세지 보여주기  ↓
+				-> response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+					에러 401   => 
+구글에서 status code 검색 => https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+
+	
+SecurityConfig.java		- .authenticationEntryPoint()  -> 작성 
+			- return 으로 받기
+
+웹페이지에서 로그인 시도해보기
+
+회원가입할 때 에러처리하기
+
+pom.xml		- 4장 Spring Security  14페이지 의존성주입
+
+MemberFormDto.java	- @NotBlank  (jakarta.validation.constraints.NotBlank  import)
+			- @NotEmpty (jakarta.validation.constraints.NotBlank  import)
+			- @Email  => 이메일 정규식 유효성 검사 자동
+			- @Length  => 비밀번호 최소길이, 최대길이 설정
+
+MemberController.java	- memberForm() 메소드 매개변수에   => @Valid 어노테이션, BindingResult bindingResult, Model model 변수 추가
+			- @Valid  => 유효성을 검증하려는 객체 앞에 붙인다.
+			- BindingResult  => 유효성 검증 후의 결과가 들어있다.
+			- 유효성 검증에 에러가 있다면 페이지 이동시키는 함수 =>  if(bindingResult.hasErrors())
+			- MemberService.java  -> IllegalStateException  의 에러잡기
+			- try/catch 생성 -> Member member 넣어주기
+			- Exception => IllegalStateException 변경, 하단 작성
+
+웹페이지에서 회원가입 시도해보기
+
+MemberService.java	- implements UserDetailsService  => 오버라이드
+			- findByEmail( ) 
+
+memberLoginForm.html	- <form> =>action, method
+			- class="form-group"  => <p>  => 타임리프 추가
+
+로그인 되는지 테스트 해보기
+
+pom.xml		- <dependency> 추가 4장 Spring Security  30페이지 의존성주입
+		- 시큐리티 의존성주입 변경  버전 5 -> 6
+		  <dependency>
+    			<groupId>org.thymeleaf.extras</groupId>
+	    		<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+	  	  </dependency>
+
+header.html	- <html> 에 추가 =>  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+		- 로그아웃, 구매이력, 장바구니 부분  -> sec:authorize="isAuthenticated()"  추가  =>  <!-- 로그인 했을 때 보여주기 -->
+		- 로그인 부분 -> sec:authorize="isAnonymous()"  추가   => <!-- 로그인 안했을 때 보여주기 -->
+		- 관리자메뉴 <li> 태그에 ->  sec:authorize="hasAnyAuthority('ROLE_ADMIN')"   => admin 권한 로그인 했을 때 보여주기
+		
+========================================================================================
+
+2023.07.03
+
+
+SecurityConfig	-1. 페이지 접근에 권한 중간에 추가 => .requestMatchers("/favicon.ico", "/error").permitAll() wnd
+
+
+========================================================================================
+2023.07.04
+
+Entity 에 클래스 생성하기
+
+클래스명
+Cart.java	- 클래스 어노테이션 추가  => @Entity, @Table, @Getter, @Setter, @ToString
+	- 기본키 생성  => @Id,  @Column,  @GeneratedValue
+	- 외래키생성하는 방법 => 테이블 생성 -> 관계성 어노테이션 설정
+				-> @JoinColumn 어노테이션으로 외래키생성
+
+
+CartItem.java	- 클래스 어노테이션 추가(상위동일)
+		- 기본키 생성  => 어노테이션 상위 동일
+		- 상품갯수 컬럼 추가
+		- 장바구니식별자, 상품식별자 외래키 생성 => 관계성 어노테이션 n:1 로 설정
+
+Order		- 클래스 어노테이션 추가(상위동일)
+		- 기본키 생성  => 어노테이션 상위 동일
+		- orderStatus  => 이넘클래스 생성 후 이넘클래스를 타입으로 받기
+		- 등록일, 수정일 필드 추가  =>  주문일 != 등록일 != 수정일
+
+OrderItem	- 동일하게 작성
+
+** 만약에 order 테이블과 orderItem 양방향 매핑할 때
+	order 클래스에서 orderItem 은 자식 테이블이 되므로 List 로 만든다
+
+@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+-> mappedBy = "order" => OrderItem 클래스에서 외래키로 지정한 필드의 order
+		=> 연관관계 주인 설정(5장 JPA 연관 관계 매핑 11p) => 부모테이블로 설정 
+-> cascade = CascadeType.ALL  => 영속성전이 관계
+		=> ALL  : 부모 엔티티의 영속성 상태 변화를 자식 엔티티에 모두 전이
+-> orphanRemoval = true  => 부모 엔티티가 삭제될 때 연관된 자식 엔티티도 함께 삭제됨
+			   자식 엔티티가 다른 테이블과도 연관관계가 있으면 true 주면 안됨	
+
+#데이터베이스 초기화 전략
+spring.jpa.hibernate.ddl-auto=create   => update, create 로 수정해서 사용 할 수 있다.
+
+모든 엔티티클래스에서  join한 필드에  @ManyToOne, @OneToOne, @OneToMany 
+				옆에 (fetch = FetchType.LAZY) 추가 => 연관된 것만 가져오게 설정하는 것
+ 
+
+private LocalDateTime regTime; /  private LocalDateTime updateTime;  다수 클래스에 쓰이기 때문에
+공통으로 쓸 수 있게 설정 할 수 있다 ↓
+
+
+com.shopmax.config  패키지에  => AuditorAwareImpl 클래스 생성
+
+AuditorAwareImpl.java	- implements 설정
+			- 오버라이드 하기
+			- 나머지 메소드 작성 마무리하기
+			- Authentication  => 로그인한 사용자의 정보가 담겨져있다.
+
+com.shopmax.config  패키지에  => AuditConfig 클래스 생
+
+AuditConfig.java		- @Bean 어노테이션 작성
+			- 클래스에 @Configration 어노테이션 추가
+			- auditorProvider() 메소드 작성 마무리
+			- 클래스에 @EnableJpaAuditing 어노테이션 추가	
+				=>JPA 에  auditing 기능을 활성화
+				=> audit => 
+
+entity 패키지에 => BaseTimeEntity, BaseEntity 클래스를 abstract 설정해서 생성
+
+BaseEntity.java		- extends BaseTimeEntity 추가
+
+BaseTimeEntity.java		- @EntityListeners(value = {AuditingEntityListener.class})
+			  @MappedSuperclass   =>부모클래스를 상속받는 자식클래스에게 매핑정보를 제공
+			  @Getter
+			  @Setter    어노테이션 추가
+			- regTime, updateTime  필드추가, 어노테이션 붙이기
+
+BaseEntity.java		- 상위와 동일, 어노테이션 추가
+			- createBy, modifiedBy 필드 생성 -> 작성방법은 상위 동일
+
+최종적으로는 BaseEntity 에 모든 데이터가 있다.
+BaseTimeEntity 를 상속받고 있기 때문에
+
+Item, Member, Order 클래스		- extends BaseEntity 추가해서 데이터 상속받기
+				- 등록일, 수정일 필드 삭제하기 - extends 해서 필요없음
+
+
+
+========================================================================================
+2023.07.05(수)
+
+item.java		- itemDetail 필드에 columnDefinition = "longtext" 추가
+
+이메일 기억  => 자바스크립트로 쿠키하기
+
+
+static-js 폴더 - cookie.js  파일 생성 - 쿠키 복붙
+
+memebrLoginForm.html	- script 연결
+			- script 작성
+
+
+로그인창에 이메일 기억되는지 확인
+
+com.shopmax.entity 패키지 에 ItemImg 클래스 생성
+
+ItemImg.java	- 클래스 어노테이션 추가
+		- 클래스 명에  extends  추가
+		- 테이블 컬럼 생성
+		- 리런치 하고 mysql  에서 테이블 새로고침 해서 테이블 확인
+		- 이미지 정보를 업데이트하는 updateItemImg 메소드
+
+pom.xml		- modelMapper  디펜던시 추가
+
+
+com.shopmax.dto	에  ItemImgDto  ,  ItemFormDto  클래스 생성
+
+ItemImgDto.java	- 어노테이션 추가
+		- 필드 추가하기 (ItemImg.java 필드와 동일하게)
+		- ModelMapper
+		- ItemImgDto 변환 메소드
+
+ItemFormDto.java	- 어노테이션 추가
+		- 필드 추가하기 (Item.java 필드와 동일하게)
+		- List<ItemImgDto>,  List<Long>
+		- ModelMapper 추가
+		- createItem, ItemFormDto  변환 메소드 추가
+		-필드에 필수 입력 어노테이션 추가
+
+itemForm.html	- <form> 태그에  action="/admin/item/new"   /  method="post"
+		- 타임리프 : th:object="${itemFormDto}"
+		- <input type="hidden" />  =>  th:field="*{id}" 추가
+		- th:field="*{ }" 중간에 input 에 넣어주기
+		- <p> 태그에 에러메세지 넣어주기
+			 => th:if="${#fields.hasErrors('')}" th:errors="*{}" class="fieldError"  넣어주기
+		- 에러메세지 색상변경  => .fieldError css color 변경
+		- 이미지	=> 반복 타임리프 걸어주기
+			=> <label> th:text="상품이미지 + ${num}"
+
+ItemController.java		- th:object="${itemFormDto}" 때문에 상품페이지 띄울때 model 추가
+ 			- model.addAttribute("itemFormDto", new ItemFormDto());
+
+페이지 띄워서 테스트해보기 => F12 에서 input 에 태그 잘 들어오는지 확인
+
+itemForm.html	- 자바스크립트 추가 => 파일 첨부시 확장자가 이미지 파일인지 검사
+		- $(document).ready(function(){}  안에 => 에러처리 함수등록,  bindDomEvent() 함수 등록
+		- 가격 천단위 콤마 찍게 설정  => 
+			가격입력 태그 안에 => onkeyup="inputNumberFormat(this)"
+			function inputNumberFormat(obj){ }
+		- 상품등록 버튼을 누를 때 천단위 콤마 없애기 => beforeSubmit(){}
+		- 상품등록  onclick => 함수명 넣어주기
+		- <form> 태그에 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"> 
+		   넣어주기
+
+application.properties	- spring.servlet.multipart.maxFileSize=20MB
+			  spring.servlet.multipart.maxRequestSize=100MB
+			  itemImgLocation=C:/shop/item
+			  uploadPath=file:///C:/shop/
+
+[C:] - [shop] - [item]  폴더 만들기
+
+
+com.shopmax.config  패키지에  WebMvcConfig  클래스 생성
+
+WebMvcConfig.java	-  implements WebMvcConfigurer 추가
+			- 컨피큐레이션 어노테이션 추가
+			- addResourceHandlers 오버라이드
+			- uploadPath 객체 생성
+			- addResourceHandlers  메소드에 registry 로 이미지 경로 바꾸기(경로 우회)
+
+com.shopmax.service  패키지에  FileService  클래스 생성
+
+FileService.java		- @Service 어노테이션 추가
+			- uploadFile() ,   deleteFile()  =>  throws Exception 추가 
+			- uploadFile()  => 매개변수 추가
+			- 중복되지 않은 이름을 만드는   UUID  추가
+			- originalFileName 을 "." 을 기준으로 자르기  => 확장자명 구하기
+			- 파일 이름 생성하는 savedFileName 객체 만들기
+			- 파일 업로드 경로에 파일이름 붙여주기
+			- 파일 업로드하기
+			- return 으로 파일 이름 받기
+
+			- 파일삭제 deleteFile 메소드 작성
+			- 클래스에 @Log 어노테이션 생성
+			- File deleteFile = new File(filePath); 객체 생성
+			- 로그 기록 저장하는 if 함수 작성
+			
+
+com.shopmax.repository  패키지에  ItemImgRepository   인터페이스 생성
+
+ItemImgRepository.java	- extends JpaRepository<ItemImg, Long> 추가
+
+
+com.shopmax.service  패키지에   ItemImgService  클래스 생성
+
+ItemImgService.java	- @Service / @Transactional /  @RequiredArgsConstructor 클래스 어노테이션 추가
+			- 필드 작성
+			- saveItemImg() 메소드 작성
+			- 1. 파일을 itemImgLocation 에 저장	
+			- 2. DB에 item_img 테이블에 저장  
+
+
+ 
+com.shopmax.service  패키지에   ItemService  클래스 생성
+
+ItemService.java	- 클래스에 어노테이션 추가
+		- 의존성 주입 3개
+		- 상품등록하는 saveItem() 메소드
+		- 1. 상품등록
+		- 2. 이미지등록
+		- 첫번째 이미지 일때 대표상품 이미지 지정
+		
+ItemController.java		- @RequiredArgsConstructor 클래스 어노테이션 추가
+			- ItemService 의존성 주입
+
+========================================================================================
+2023.07.06(목)
+
+수정하기 페이지 만들기
+
+itemModifyForm.html	- itemForm.html 페이지에 있는 content 부분, script 부분 복붙
+			-  상품등록 -> 상품수정 으로 바꿔주기  3군데
+			- <form> action -> 타임리프로 변경
+			- 이미지 부분 수정 -> 이미지 명을 띄울 수 있게
+				=> 타임리프 부분 수정  th:if  / th:each
+			- 이미지 label 부분 th:text  삼항연산자로 작성
+
+수정페이지 보여주기
+
+ItemController.java		- itemDtl 메소드 작성
+			- value = "/admin/item/{itemId}"  => {itemId} 가 바뀌면서 수정페이지 데이터를 매번 다르게 가져옴
+			- {itemId} 가져올 수 있게 매개변수에 @PathVariable("itemId") 추가
+			- 데이터 베이스에 등록된 itemId 가져오는 하
+
+상품 가져오는 메소드 작성
+ItemService.java		- getItemDtl 메소드 작성
+			- 어노테이션 추가  @Transactional  -> org.springframework.transaction.annotation.Transactional;
+
+ItemImgRepository.java	- findByItemIdOrderByIdAsc 메소드 작성
+
+
+ItemService.java		-  item_img 테이블의 이미지를 가져오
+				=>ItemImgRepository.java	에서 작성한 findBy 로  itemImgList 가져오기
+			- item 테이블에 있는 데이터를 가져오기
+				=> findById(itemId) 가져오는데, findById 는 자동생성되서 ItemRepository.java 에서 만들필요없음
+				=> Item 엔티티 객체 -> ItemDto 로 변환
+			- ItemFormDto 에 이미지 정보(itemImgDtoList) 를 넣어주기
+				=> ItemDto 변화
+
+ItemController.java		- itemService 의 ItemDtl 을 가져와서 ItemFormDto 담아주고
+			- try / cacth  처리해서 model 에 추가하기
+			- 에러메세지 처리
+
+localhost 관리자 로그인 하고 주소로 들어가기
+http://localhost/admin/item/3
+데이터 제대로 들어오는지 확인하기
+
+
+상품 수정 등록하는 메소드
+ItemController.java		- itemUpdate(){  return "redirect:/";}
+			- 매개변수 추가하기
+			- bindingResult 에러검사 =>에러발생하면 itemForm 으로 보내주기
+			- 첫번째 이미지 있는지 검사
+
+
+수정 업데이트 메소드 만들기
+ItemService.java		-  updateItem()  => 예외처리
+			-  매개변수 추가하기
+			- item 테이블에 있는 데이터를 가져오기
+				=> findById(itemId) 가져오는데, findById 는 자동생성되서 ItemRepository.java 에서 만들필요없음
+
+Item.java		- item 엔티티 수정 메소드 updateItem() 작성
+		
+ItemService.java		- item 엔티티에서 가져온 데이터 바꿔준다
+				=>item.updateItem(itemFormDto); 추가
+
+ItemImgService	- 이미지 업데이트 메소드 updateItemImg() 작성
+			=> 해당이미지기 가져와서
+			=> 기존이미지 파일 C: 에서 삭제하고
+			=> 수정된 이지미 파일 C: 에 업로드하기
+			=> 상품이미지 저장하기
+
+ItemService.java		- item_img 테이블의 데이터도 바꿔준다.
+			- 변경한 item의 id 리턴
+
+
+ItemController.java		- 수정된 데이터 가져오기 itemService.updateItem(itemFormDto, itemImgFileList);
+			- 에러메세지 처리
+
+com.shopmax.dto 패키지에 ItemSearchDto 클래스 생성
+
+ItemSearchDto.java		- 어노테이션 추가
+			- searchDateType, searchSellStatus,  searchBy필드 추가
+
+
+com.shopmax.repository 패키지에 ItemRepositoryCustom  인터페이스 생성
+	
+ItemRepositoryCustom.java		- 추상메소드 생성
+					=> 페이징 처리하는 메소드
+					=> Pageable 은 org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable 로 임폴트
+
+com.shopmax.repository  패키지에  ItemRepositoryCustomImpl 클래스 생성
+
+ItemRepositoryCustomImpl.java	- implements ItemRepositoryCustom추가
+				- 오버라이드  Page<Item> getAdminItemPage 
+				- private JPAQueryFactory queryFactory; 추가
+				- ItemRepositoryCustomImpl 의존성 주입
+				- Page<Item> getAdminItemPage => 쿼리문 작성
+				- where()  안에 담아줄 내용 작성
+					=>BooleanExpression regDtsAfter( ) 작성
+				 	=> where( ) 에 regDtsAfter(itemSearchDto.getSearchDateType() 담아주기
+				- searchSellStatusEq 메소드 만들어서 where (), 다음에 추가
+				- searchByLike 메소드 만들어서 그 다음에 추가
+				- order by 로 정렬
+				- long total  => Wildcard  => com.querydsl.core.types.dsl
+					
+com.shopmax.repository  패키지
+
+ItemRepository.java	- ItemRepositoryCustom 상속 추가하기
+
+
+ItemService.java		- getAdminItemPage 메소드 작성
+
+
+ItemController.java		- 상품관리 페이지 띄우기 itemManage()
+			- value  에  "/admin/items/{page}"  페이징 처리 추가
+			- 매개변수 추가
+			- 
+
+com.shopmax.controller  패키지에 ItemRestController 클래스 생성
+
+
+ItemRestController.java	- ItemController.java 에서 itemManage  메소드 가져오고
+			- ItemController.java 의 메소드는 각주처리
+			- 어노테이션 추가
+			- itemService 의존성 주입
+			- items 로 return 받기
+			- Page<Item> 타입으로 변경
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container-xxl">
+	<div class="row login-wrap">
+		<div class="col-lg-12">
+			<div></div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
