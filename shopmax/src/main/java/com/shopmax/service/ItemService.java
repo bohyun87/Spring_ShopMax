@@ -111,8 +111,7 @@ public class ItemService {
 		
 	} 
 
-	//메인페이지 getMainItemPage 호출하는 메소드
-	
+	//메인페이지 getMainItemPage 호출하는 메소드	
 	public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
 		Page<MainItemDto> itemMainPage = itemRepository.getMainItemPage(itemSearchDto, pageable);
 		

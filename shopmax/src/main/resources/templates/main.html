@@ -139,7 +139,7 @@
 					 <div class="item">
 		                <div class="item-entry" >
 		                  <a th:href="'/item/' + ${item.id}"  class="product-item md-height bg-gray d-block">
-		                    <img th:src="${item.imgUrl}" alt="${item.itemNm}" class="img-fluid">
+		                    <img th:src="${item.imgUrl}" th:alt="${item.itemNm}" class="img-fluid">
 		                  </a>
 		                  <h2 class="item-title">
 		                  	<a href="#">[[${item.itemNm}]]</a>

@@ -35,6 +35,14 @@ public class ItemController {
 	public String itemShopList() {
 		return "/item/itemShopList";
 	}
+	
+	//상품 상세 페이지
+	@GetMapping(value = "/item/{itemId}")
+	public String itemDtl(Model model, @PathVariable("itemId") Long itemId) {
+		ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
+		model.addAttribute("item", itemFormDto);		
+		return "item/itemDtl";
+	}
 		
 	//상품등록 페이지 띄우기
 	@GetMapping(value = "/admin/item/new")
