@@ -714,112 +714,102 @@ ItemRestController.java	- ItemController.java 에서 itemManage  메소드 가�
 			- items 로 return 받기
 			- Page<Item> 타입으로 변경
 
+실행해서 JSON 객체로 내용 살펴보기
 
+===================================================
 
+2023.07.07
 
+ItemRestController.java	- 전체 주석처리
 
 
+ItemController.java		- 주석풀기
 
+itemMng.html	- <tbody> <tr> 한 행만 남기고 지우기 => 반복 돌릴예정
+		- <form>	 => method=get,  action 에 타임리프 추가
+		- <tbody> <tr> 타임리프 추가하기
+		- <tbody> <th> text 타임리프 추가하고
+		- <td> 에 <a> 태그 추가  href 타임리프 추가
+		- <td> 전체적으로 text 타임리프 추가
 
+		- 검색창
+		- row <div> -> th:object="${itemSearchDto}"
+		- <select> , <input> -> field 타임리프 작성
+		
+		- 자바스크립트
+		- <script> => 자바스크립트 시작 함수
+			  => 페이지 버튼 눌렀을 때 주소이동하는 함수
+			  => ready(function() 에 
 
+		- 페이징 처리
+		- <li> page-item => 1번 만 남기고 다 지우기
+		- <nav>  => 타임리프 작성
+		- ◀  => th:classappend="${items.first} ? 'disabled' "
+		       => th:onclick="'javascript:page(' + ${items.number - 1} + ')'"
+		- ▶  => th:classappend="${items.last} ? 'disabled' "
+		       => th:onclick="'javascript:page(' + ${items.number + 1} + ')'"
+		- 페이지번호	=> th:each="page: ${#numbers.sequence(start, end)}"
+				
 
+주문하기 
 
 
+com.shopmax.exception 패키지 생성 ->  OutOfStockException  클래스 생성
 
+OutOfStockException.java	- extends RuntimeException 추가
+			- OutOfStockException(String message) 생성자 추가
 
+Item.java		- 상품의 재고 감소
+		- removeStock(int stockNumber)
 
+OrderItem.java	- 주문할 상품하고 주문수량을 통해 orderItem 객체를 만듬
+		- OrderItem createOrderItem
+		- 총 가격 구하기
+		-  getTotalPrice()
 
+Order.java	- addOrderItem(OrderItem orderItem)
+		- order 객체를 생성해준다 => Order createOrder()
+		- 총 주문 금액 구하기 => getTotalPrice()
 
 
+com.shopmax.dto  패키지에   OrderDto 클래스 생성 (주문할 때 쓰이는 클래스)
 
+OrderDto.java	- 어노테이션 추가
+		- itemId, count 필드 추가하기
 
 
 
+=====================================================
+퀴즈 - 신상품 페이지 
 
 
+main.html	- 코드정리
 
+MainController.java		- 의존성 주입 어노테이션 추가
+			- 의존성 주입  => private final ItemService itemService;
+			- 신상품 영역 페이징처리하기
+				=> itemSearchDto, page, model 매개변수 추가
+				=> pageable 추가
 
 
+com.shopmax.dto  패키지에   MainItemDto 클래스 생성
 
+MainItemDto.java	- 어노테이션 추가
+		- 필드 생성
+		- MainItemDto 생성자 작성
 
-<div class="container-xxl">
-	<div class="row login-wrap">
-		<div class="col-lg-12">
-			<div></div>
-		</div>
-	</div>
-</div>
+ItemRepositoryCustom.java	- main 에 출력할 때 필요한 추상메소드 생성
+				=> Page<MainItemDto> getMainItemPage
 
+ItemRepositoryCustomImpl.java	- 오버라이드
+					=> Page<MainItemDto> getMainItemPage
+					=> 쿼리문에 맞춰 코드작성
+					=> and item.item_nm like '%검색어%' 쿼리문을 where 변수에 넣어주기 위해서 변수 메소드 생성 
 
+==================================================
 
+ItemService.java	 => getMainItemPage 호출하는 메소드
 
+MainController.java	  => ItemService 에서 작성한 메소드 호출
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+main.html	=> 데이터 출력
