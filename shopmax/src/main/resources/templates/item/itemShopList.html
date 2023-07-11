@@ -55,29 +55,19 @@
                 </div>
               </div>
             </div>
+            
             <div class="row mb-5">
-
+            
+            <th:block  th:each="item, status: ${items.getContent()}">
               <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/prod_2.png" alt="Image" class="img-fluid">
+                <a th:href="'/item/' + ${item.id}" class="product-item md-height bg-gray d-block">
+                  <img th:src="${item.imgUrl}" th:alt="${item.itemNm}" class="img-fluid">
                 </a>
-                <h2 class="item-title"><a href="#">Gray Shoe</a></h2>
-                <strong class="item-price">$20.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/prod_3.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Blue Shoe High Heels</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/model_5.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Denim Jacket</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
+                <h2 class="item-title"><a th:href="'/item/' + ${item.id}" >[[${item.itemNm}]]</a></h2>  <!-- 상품명 -->
+                <strong class="item-price">
+                	<del>[[${#numbers.formatInteger(item.price*1.5, 0, 'COMMA')}]]원</del> 
+                	&nbsp;&nbsp;[[${#numbers.formatInteger(item.price, 0, 'COMMA')}]]원
+                </strong>   <!-- 상품가격 -->
 
                 <div class="star-rating">
                   <span class="icon-star2 text-warning"></span>
@@ -86,113 +76,50 @@
                   <span class="icon-star2 text-warning"></span>
                   <span class="icon-star2 text-warning"></span>
                 </div>
-
               </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/prod_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Leather Green Bag</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-                <div class="star-rating">
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                </div>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/model_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Smooth Cloth</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/model_7.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Yellow Jacket</a></h2>
-                <strong class="item-price">$58.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/prod_2.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Gray Shoe</a></h2>
-                <strong class="item-price">$20.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/prod_3.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Blue Shoe High Heels</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/model_5.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Denim Jacket</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-
-                <div class="star-rating">
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                </div>
-
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/prod_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Leather Green Bag</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-                <div class="star-rating">
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                  <span class="icon-star2 text-warning"></span>
-                </div>
-              </div>
-
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/model_1.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Smooth Cloth</a></h2>
-                <strong class="item-price"><del>$46.00</del> $28.00</strong>
-              </div>
-              <div class="col-lg-6 col-md-6 item-entry mb-4">
-                <a href="#" class="product-item md-height bg-gray d-block">
-                  <img src="/images/model_7.png" alt="Image" class="img-fluid">
-                </a>
-                <h2 class="item-title"><a href="#">Yellow Jacket</a></h2>
-                <strong class="item-price">$58.00</strong>
-              </div>
+              
+             </th:block>
             </div>
-            <div class="row">
-              <div class="col-md-12 text-center">
-                <div class="site-block-27">
-                  <ul>
-                    <li><a href="#">&lt;</a></li>
-                    <li class="active"><span>1</span></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">&gt;</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            
+            
+            <div>   <!-- 페이징 버튼 -->
+
+						<nav th:with="start=${(items.number / maxPage) * maxPage + 1}, 
+									  end = (${ ((items.totalPages == 0)) ? 1 :
+									  		(start + (maxPage -1) < items.totalPages ?
+									  			  start + (maxPage - 1) : items.totalPages)})" 						
+							aria-label="...">
+							
+						  <ul class="pagination d-flex justify-content-center">
+						  
+						    <li class="page-item" th:classappend="${items.first} ? 'disabled'">
+						      	<a class="page-link"
+						      	   th:href="@{'/item/shop' + '?searchQuery=' + ${itemSearchDto.searchQuery}
+						      	  						 + '&page=' + ${items.number - 1}}">◀</a>  <!-- 이전페이지로 가기 때문에 -1 -->
+						    </li>  <!-- 검색기능 추가할 거라서 검색하면 페이지 나오게 설정 -->
+						    
+						    <!-- page => 1부터 시작 => 실제로 데이터로 넘겨야 되는 건  0부터이므로, page - 1  로 작성 -->
+						    <li class="page-item"
+						    	th:each="page: ${#numbers.sequence(start, end)}"   
+						    	th:classappend="${items.number eq page -1} ? 'active' : '' ">
+						    	<a class="page-link" th:inline="text"
+						    		th:href="@{'/item/shop' + '?searchQuery=' + ${itemSearchDto.searchQuery}
+						      	  						 + '&page=' + ${page - 1}}">[[${page}]]</a>
+						    		                   							  <!-- page : 위에 each 에서 생성한 page -->    
+						    	</li>
+						    
+						    <li class="page-item" th:classappend="${items.last} ? 'disabled'">
+						   		<a class="page-link"
+						      	   th:href="@{'/item/shop' + '?searchQuery=' + ${itemSearchDto.searchQuery}
+						      	  						 + '&page=' + ${items.number + 1}}">▶</a>   <!-- 다음페이지로 가기 때문에 +1 -->
+						    </li>
+						    
+						  </ul>
+						</nav>
+
+				</div>
+							
+            
           </div>
 
           <div class="col-md-3 order-2 mb-5 mb-md-0">
@@ -243,6 +170,7 @@
 
             </div>
           </div>
+        
         </div>
 
       </div>

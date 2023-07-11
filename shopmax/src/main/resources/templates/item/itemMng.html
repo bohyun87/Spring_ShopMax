@@ -81,7 +81,7 @@
 									  end = (${ ((items.totalPages == 0)) ? 1 :
 									  		(start + (maxPage -1) < items.totalPages ?
 									  			  start + (maxPage - 1) : items.totalPages)})" 						
-						aria-label="...">
+							aria-label="...">
 						  <ul class="pagination d-flex justify-content-center">
 						  
 						    <li class="page-item" th:classappend="${items.first} ? 'disabled'">
@@ -92,8 +92,7 @@
 						    <!-- page => 1부터 시작 => 실제로 데이터로 넘겨야 되는 건  0부터이므로, page - 1  로 작성 -->
 						    <li class="page-item"
 						    	th:each="page: ${#numbers.sequence(start, end)}"   
-						    	th:classappend="${items.number eq page -1} ? 'active' : '' "
-						    >
+						    	th:classappend="${items.number eq page -1} ? 'active' : '' " >
 						    	<a class="page-link" th:inline="text"
 						    		th:onclick="'javascript:page(' + ${page - 1} + ')'">
 						    		[[${page}]]
