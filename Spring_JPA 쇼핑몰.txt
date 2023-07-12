@@ -958,3 +958,35 @@ OrderController.java	- 주문삭제 deleteOrder()  메소드 작성
 OrderService.java		- 주문삭제 deleteOrder() 서비스 작성
 
 OrderController.java	- 주문삭제 -> orderService.deleteOrder(orderId);
+
+===================================================================================
+2023.07.12
+
+검색창 만들기
+
+header.html	- 검색창 부분 수정
+		- method -> get 방식
+
+
+메인페이지에 인기상품
+
+main.html	- 인기상품으로 제목 수정
+		- div 박스 1개만 남기고 정리 
+
+com.shopmax.dto 패키지에  ItemRankDto 인터페이스 생성
+
+ItemRankDto	- 컬럼을 추상메소드 형태로 작성(변수 X) 
+		- 네이티브 쿼리를 사용할 때 엔티티가 아니라 Dto로 바로 받고 싶을 때 Dto 를 인터페이스로 작성하고 컬럼을 추상메소드로 작성
+
+ItemRepository	- getItemRankList() 
+		- 쿼리문 value 에 넣기
+
+
+ItemService	- getItemRankList() 메소드 작성
+
+MainController	- 호출하기
+		- 기존 main 메소드에 itemsRank, model 추가
+
+main.html	- th:block 작성 
+		- 상품 목록 태그 전체 th:block 사이에 넣기
+
