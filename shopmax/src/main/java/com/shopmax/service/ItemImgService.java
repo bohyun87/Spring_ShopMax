@@ -1,5 +1,6 @@
 package com.shopmax.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
@@ -16,8 +17,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ItemImgService {
 	
+	
 	//@Autowired 가 없어도 @RequiredArgsConstructor 때문에 자동으로 의존성 주입됨
-	private String itemImgLocation = "C:/shop/item";	
+	//private String itemImgLocation = "C:/shop/item";	
+	@Value("${itemImgLocation}")
+	private String itemImgLocation;
 	private final ItemImgRepository itemImgRepository;
 	private final FileService fileService;
 	

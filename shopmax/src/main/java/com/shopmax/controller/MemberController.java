@@ -24,20 +24,20 @@ public class MemberController {
 	//문의하기
 		@GetMapping(value = "/members/qa")
 		public String qa() {
-			return "/member/qa";
+			return "member/qa";
 		}
 		
 		//로그인 화면
 		@GetMapping(value = "/members/login")
 		public String loginMember() {
-			return "/member/memberLoginForm";
+			return "member/memberLoginForm";
 		}
 		
 		//회원가입 화면
 		@GetMapping(value = "/members/new")
 		public String memberForm(Model model) {
 			model.addAttribute("memberFormDto", new MemberFormDto());
-			return "/member/memberForm";
+			return "member/memberForm";
 		}
 		
 		//회원가입
